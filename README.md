@@ -24,3 +24,7 @@ All the commit will have the task-id usually looks like this
 - **feature/<feature-name>** - This is the branch where the feature is developed. When the feature is complete, it is merged back into develop.
 - **task/CAPSTONE-XXX** - This is the branch where the task is developed. When the task is complete, it is merged back into feature/<feature-name.
 - **bug/CAPSTONE-XXX** - This is the branch where the bug is fixed. When the bug is fixed, it is merged back into develop.
+
+Restricted Banches:-
+- **master** - No direct commits are allowed to this branch. All the code will be merged only via Pull Requests.
+- **develop** - No direct commits are allowed to this branch.
