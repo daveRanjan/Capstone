@@ -8,8 +8,8 @@ public class CreateProductDto {
     private String title;
     private String description;
     private Double price;
-    private String imageUrl;
-    private String categoryName;
+    private String image;
+    private String category;
 
 
     public static CreateProductDto from(Product product){
@@ -17,8 +17,8 @@ public class CreateProductDto {
         createProductDto.setTitle(product.getTitle());
         createProductDto.setDescription(product.getDescription());
         createProductDto.setPrice(product.getPrice());
-        createProductDto.setImageUrl(product.getImageUrl());
-        createProductDto.setCategoryName(product.getCategory().getName());
+        createProductDto.setImage(product.getImageUrl());
+        createProductDto.setCategory(product.getCategory().getName());
         return createProductDto;
     }
 
@@ -28,7 +28,7 @@ public class CreateProductDto {
         product.setTitle(this.title);
         product.setDescription(this.description);
         product.setPrice(this.price);
-        product.setImageUrl(this.imageUrl);
+        product.setImageUrl(this.image);
         return product;
     }
 
@@ -43,8 +43,8 @@ public class CreateProductDto {
             existingProduct.setPrice(this.price);
         }
 
-        if (this.imageUrl != null) {
-            existingProduct.setImageUrl(this.imageUrl);
+        if (this.image != null) {
+            existingProduct.setImageUrl(this.image);
         }
         return existingProduct;
     }

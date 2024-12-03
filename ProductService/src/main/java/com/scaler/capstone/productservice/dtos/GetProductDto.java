@@ -9,9 +9,8 @@ public class GetProductDto {
     private String title;
     private String description;
     private Double price;
-    private String imageUrl;
-    private Long categoryId;
-    private String categoryName;
+    private String image;
+    private String category;
 
     public static GetProductDto from(Product product) {
         GetProductDto getProductDto = new GetProductDto();
@@ -19,8 +18,8 @@ public class GetProductDto {
         getProductDto.setTitle(product.getTitle());
         getProductDto.setDescription(product.getDescription());
         getProductDto.setPrice(product.getPrice());
-        getProductDto.setImageUrl(product.getImageUrl());
-        getProductDto.setCategoryName(product.getCategory().getName());
+        getProductDto.setImage(product.getImageUrl());
+        getProductDto.setCategory(product.getCategory().getName());
         return getProductDto;
     }
 }

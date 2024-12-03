@@ -39,10 +39,10 @@ public class ProductServiceDbImpl implements ProductService {
 
     @Override
     public GetProductDto createProduct(CreateProductDto createProductDto) {
-        Category category = categoryRepository.findByName(createProductDto.getCategoryName());
+        Category category = categoryRepository.findByName(createProductDto.getCategory());
         if (category == null) {
             category = new Category();
-            category.setName(createProductDto.getCategoryName());
+            category.setName(createProductDto.getCategory());
         }
         Product product = createProductDto.toEntity();
         product.setCategory(category);
@@ -55,13 +55,13 @@ public class ProductServiceDbImpl implements ProductService {
         Product existingProduct = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found"));
 
-        Category category = categoryRepository.findByName(updateProductDto.getCategoryName());
+        Category category = categoryRepository.findByName(updateProductDto.getCategory());
         if (category == null) {
             category = new Category();
-            category.setName(updateProductDto.getCategoryName());
+            category.setName(updateProductDto.getCategory());
         }
         existingProduct = updateProductDto.toEntity(existingProduct);
-        if (StringUtils.hasText(updateProductDto.getCategoryName())) {
+        if (StringUtils.hasText(updateProductDto.getCategory())) {
             existingProduct.setCategory(category);
         }
         return GetProductDto.from(productRepository.save(existingProduct));
