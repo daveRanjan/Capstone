@@ -26,6 +26,7 @@
     </properties>
     <modules>
         <module>ProductService</module>
+        <module>UserService</module>
     </modules>
     <dependencies>
         <dependency>
