@@ -55,4 +55,28 @@ public class AuthorizationConsent {
             return Objects.hash(registeredClientId, principalName);
         }
     }
+
+    public String getRegisteredClientId() {
+        return registeredClientId;
+    }
+
+    public void setRegisteredClientId(String registeredClientId) {
+        this.registeredClientId = registeredClientId;
+    }
+
+    public String getPrincipalName() {
+        return principalName;
+    }
+
+    public void setPrincipalName(String principalName) {
+        this.principalName = principalName;
+    }
+
+    public String getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(String authorities) {
+        this.authorities = authorities;
+    }
 }
