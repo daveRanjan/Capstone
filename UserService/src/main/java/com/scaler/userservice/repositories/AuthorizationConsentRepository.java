@@ -1,11 +1,10 @@
 package com.scaler.userservice.repositories;
 
-import java.util.Optional;
-
+import com.scaler.userservice.entities.AuthorizationConsent;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.scaler.userservice.entities.AuthorizationConsent;
+import java.util.Optional;
 
 @Repository
 public interface AuthorizationConsentRepository extends JpaRepository<AuthorizationConsent, AuthorizationConsent.AuthorizationConsentId> {

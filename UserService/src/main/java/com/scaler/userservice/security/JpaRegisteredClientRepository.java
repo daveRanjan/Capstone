@@ -3,11 +3,8 @@ package com.scaler.userservice.security;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nimbusds.jose.shaded.gson.Gson;
-import com.nimbusds.jose.shaded.gson.reflect.TypeToken;
 import com.scaler.userservice.entities.Client;
 import com.scaler.userservice.repositories.ClientRepository;
-import io.micrometer.core.instrument.util.StringEscapeUtils;
 import org.springframework.security.jackson2.SecurityJackson2Modules;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
@@ -81,18 +78,15 @@ public class JpaRegisteredClientRepository implements RegisteredClientRepository
                 .clientAuthenticationMethods(authenticationMethods ->
                         clientAuthenticationMethods.forEach(authenticationMethod ->
                                 authenticationMethods.add(resolveClientAuthenticationMethod(authenticationMethod))))
-                .authorizationGrantTypes((grantTypes) ->
+                .authorizationGrantTypes(grantTypes ->
                         authorizationGrantTypes.forEach(grantType ->
                                 grantTypes.add(resolveAuthorizationGrantType(grantType))))
-                .redirectUris((uris) -> uris.addAll(redirectUris))
-                .postLogoutRedirectUris((uris) -> uris.addAll(postLogoutRedirectUris))
-                .scopes((scopes) -> scopes.addAll(clientScopes));
+                .redirectUris(uris -> uris.addAll(redirectUris))
+                .postLogoutRedirectUris(uris -> uris.addAll(postLogoutRedirectUris))
+                .scopes(scopes -> scopes.addAll(clientScopes));
 
-        Map<String, Object> clientSettingsMap = parseMap(client.getClientSettings());
         builder.clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build());
-
-        Map<String, Object> tokenSettingsMap = parseMap(client.getTokenSettings());
-        builder.tokenSettings(TokenSettings.builder().authorizationCodeTimeToLive(Duration.of(1, ChronoUnit.HOURS)).build());
+        builder.tokenSettings(TokenSettings.builder().authorizationCodeTimeToLive(Duration.of(1, ChronoUnit.DAYS)).build());
 
         return builder.build();
     }
@@ -126,10 +120,8 @@ public class JpaRegisteredClientRepository implements RegisteredClientRepository
 
     private Map<String, Object> parseMap(String data) {
         try {
-            return new Gson().fromJson(data, new TypeToken<Map<String, Object>>() {
+            return new ObjectMapper().readValue(data, new TypeReference<Map<String, Object>>() {
             });
-//            return this.objectMapper.readValue(data, new TypeReference<>() {
-//            });
         } catch (Exception ex) {
             throw new IllegalArgumentException(ex.getMessage(), ex);
         }

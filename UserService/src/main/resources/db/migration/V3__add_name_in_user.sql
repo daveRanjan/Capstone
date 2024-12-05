@@ -1,0 +1,1 @@
+ALTER TABLE authdb.user ADD COLUMN name VARCHAR(255);
