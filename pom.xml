@@ -13,13 +13,8 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>Capstone</name>
     <description>Capstone</description>
+    <packaging>pom</packaging>
     <url/>
-    <licenses>
-        <license/>
-    </licenses>
-    <developers>
-        <developer/>
-    </developers>
     <scm>
         <connection/>
         <developerConnection/>
@@ -29,6 +24,10 @@
     <properties>
         <java.version>21</java.version>
     </properties>
+    <modules>
+        <module>ProductService</module>
+        <module>UserService</module>
+    </modules>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
