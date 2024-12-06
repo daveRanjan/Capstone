@@ -2,7 +2,6 @@ package com.scaler.userservice.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.scaler.userservice.entities.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,11 +16,11 @@ import java.util.List;
 @Setter
 @JsonDeserialize(as = CustomSpringUser.class)
 public class CustomSpringUser implements UserDetails, Serializable {
-    private String username;
+    private String email;
     private String password;
 
     public CustomSpringUser(String email, String password) {
-        this.username = email;
+        this.email = email;
         this.password = password;
     }
 
@@ -41,7 +40,7 @@ public class CustomSpringUser implements UserDetails, Serializable {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override
