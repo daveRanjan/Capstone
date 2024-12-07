@@ -67,6 +67,7 @@ public class SecurityConfig {
             throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/auth/login").permitAll()
                         .anyRequest().permitAll()
                 )
                 // Form login handles the redirect to the login page from the

@@ -1,10 +1,13 @@
 package com.scaler.userservice.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.scaler.userservice.dtos.CustomSpringUser;
+import com.scaler.userservice.dtos.ForgotPasswordRequestDto;
+import com.scaler.userservice.dtos.ResetPasswordRequestDto;
+import com.scaler.userservice.entities.ResetPasswordToken;
 import com.scaler.userservice.entities.Session;
 import com.scaler.userservice.entities.SessionStatus;
 import com.scaler.userservice.entities.User;
+import com.scaler.userservice.repositories.ResetPasswordTokenRepository;
 import com.scaler.userservice.repositories.SessionRepository;
 import com.scaler.userservice.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +34,7 @@ public class AuthService implements UserDetailsService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    private ObjectMapper objectMapper;
-
+    private ResetPasswordTokenRepository resetPasswordTokenRepository;
 
     public User signUp(String email, String password, String name) {
         User user = new User();
@@ -93,6 +95,32 @@ public class AuthService implements UserDetailsService {
         sessionRepository.save(session);
     }
 
+    public Session resetPassword(ResetPasswordRequestDto resetPasswordRequest) {
+        ResetPasswordToken token = resetPasswordTokenRepository.findByTokenAndExpirayAtGreaterThan(resetPasswordRequest.getToken(), new Date())
+                .orElseThrow(() -> new RuntimeException("Invalid token Provided"));
+        User user = userRepository.findById((long) token.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setPassword(bCryptPasswordEncoder.encode(resetPasswordRequest.getPassword()));
+        return login(user.getEmail(), resetPasswordRequest.getPassword());
+    }
+
+
+    public void forgotPassword(ForgotPasswordRequestDto forgotPasswordRequest) {
+        Optional<User> userOptional = userRepository.findByEmail(forgotPasswordRequest.getEmail());
+
+        if (userOptional.isEmpty()) {
+            throw new RuntimeException("User not found");
+        }
+
+        ResetPasswordToken token = new ResetPasswordToken();
+        token.setToken(java.util.UUID.randomUUID().toString());
+        token.setUserId(userOptional.get().getId().intValue());
+
+        resetPasswordTokenRepository.save(token);
+        // Send Email Template via Kafka
+
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(username)
@@ -100,4 +128,6 @@ public class AuthService implements UserDetailsService {
 
         return new CustomSpringUser(user.getEmail(), user.getPassword());
     }
+
+
 }

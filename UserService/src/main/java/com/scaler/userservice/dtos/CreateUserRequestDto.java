@@ -1,15 +1,17 @@
 package com.scaler.userservice.dtos;
 
-public class LoginUserRequestDto {
+public class CreateUserRequestDto {
     private String email;
     private String password;
+    private String name;
 
-    public LoginUserRequestDto() {
+    public CreateUserRequestDto() {
     }
 
-    public LoginUserRequestDto(String email, String password) {
+    public CreateUserRequestDto(String email, String password, String name) {
         this.email = email;
         this.password = password;
+        this.name = name;
     }
 
     public String getEmail() {
@@ -26,5 +28,13 @@ public class LoginUserRequestDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
