@@ -18,13 +18,23 @@ import java.util.List;
 public class CustomSpringUser implements UserDetails, Serializable {
     private String email;
     private String password;
+    private String username;
 
     public CustomSpringUser(String email, String password) {
         this.email = email;
         this.password = password;
+        this.username = email;
     }
 
     public CustomSpringUser() {
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
