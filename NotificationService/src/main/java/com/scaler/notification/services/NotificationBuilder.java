@@ -15,8 +15,8 @@ public class NotificationBuilder {
     private UserServiceFeign userServiceFeign;
     private TemplateService templateService;
 
-    public NotificationBuilder(UserServiceFeign userServiceFeign, TemplateService templateService) {
-        this.userServiceFeign = userServiceFeign;
+    public NotificationBuilder(TemplateService templateService) {
+//        this.userServiceFeign = userServiceFeign;
         this.templateService = templateService;
     }
 
@@ -38,6 +38,8 @@ public class NotificationBuilder {
             default:
                 return notification;
         }
+
+        return notification;
     }
 
     private Notification createPaymentConfirmationNotification(UserDto userDetails, Map<String, Object> context) {
