@@ -25,13 +25,6 @@ public class AuthController {
         return ResponseEntity.ok(session);
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<Void> signup(@RequestBody CreateUserRequestDto createUserRequest) {
-        authService.signUp(createUserRequest.getEmail(), createUserRequest.getPassword(), createUserRequest.getName());
-        return ResponseEntity.status(201).build();
-        //CREATED()
-    }
-
     @PostMapping("/forgot-password")
     public ResponseEntity forgotPassword(@RequestBody ForgotPasswordRequestDto forgotPasswordRequest) {
         authService.forgotPassword(forgotPasswordRequest);

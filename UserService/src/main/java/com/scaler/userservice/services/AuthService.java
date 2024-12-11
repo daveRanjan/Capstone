@@ -1,5 +1,6 @@
 package com.scaler.userservice.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.scaler.userservice.dtos.CustomSpringUser;
 import com.scaler.userservice.dtos.ForgotPasswordRequestDto;
 import com.scaler.userservice.dtos.ResetPasswordRequestDto;
@@ -10,6 +11,9 @@ import com.scaler.userservice.entities.User;
 import com.scaler.userservice.repositories.ResetPasswordTokenRepository;
 import com.scaler.userservice.repositories.SessionRepository;
 import com.scaler.userservice.repositories.UserRepository;
+import com.scaler.userservice.utils.EventPurpose;
+import com.scaler.userservice.utils.JwtTokenUtil;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -36,12 +41,19 @@ public class AuthService implements UserDetailsService {
     @Autowired
     private ResetPasswordTokenRepository resetPasswordTokenRepository;
 
+    @Autowired
+    KafkaService kafkaService;
+
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    @Transactional
     public User signUp(String email, String password, String name) {
         User user = new User();
         user.setEmail(email);
         user.setName(name);
         user.setPassword(bCryptPasswordEncoder.encode(password));
         User savedUser = userRepository.save(user);
+        kafkaService.sendMessage(Map.of("user_id", savedUser.getId(), "email", savedUser.getEmail(), "name", savedUser.getName(), "purpose", EventPurpose.USER_CREATED));
         return savedUser;
     }
 
@@ -60,7 +72,7 @@ public class AuthService implements UserDetailsService {
 
         Session session = new Session();
         session.setUser(user);
-        session.setToken(java.util.UUID.randomUUID().toString());
+        session.setToken(JwtTokenUtil.generateToken(user.getId(), user.getEmail()));
         Date expiredDate = getExpiredDate();
         session.setExpiringAt(expiredDate);
 
@@ -96,10 +108,8 @@ public class AuthService implements UserDetailsService {
     }
 
     public Session resetPassword(ResetPasswordRequestDto resetPasswordRequest) {
-        ResetPasswordToken token = resetPasswordTokenRepository.findByTokenAndExpirayAtGreaterThan(resetPasswordRequest.getToken(), new Date())
-                .orElseThrow(() -> new RuntimeException("Invalid token Provided"));
-        User user = userRepository.findById((long) token.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        ResetPasswordToken token = resetPasswordTokenRepository.findByTokenAndExpirayAtGreaterThan(resetPasswordRequest.getToken(), new Date()).orElseThrow(() -> new RuntimeException("Invalid token Provided"));
+        User user = userRepository.findById((long) token.getUserId()).orElseThrow(() -> new RuntimeException("User not found"));
         user.setPassword(bCryptPasswordEncoder.encode(resetPasswordRequest.getPassword()));
         return login(user.getEmail(), resetPasswordRequest.getPassword());
     }
@@ -118,16 +128,13 @@ public class AuthService implements UserDetailsService {
 
         resetPasswordTokenRepository.save(token);
         // Send Email Template via Kafka
+        kafkaService.sendMessage(Map.of("email", forgotPasswordRequest.getEmail(), "token", token.getToken(), "purpose", EventPurpose.PASSWORD_RESET));
 
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
+        User user = userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return new CustomSpringUser(user.getEmail(), user.getPassword());
     }
-
-
 }
