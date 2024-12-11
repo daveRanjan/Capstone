@@ -4,11 +4,10 @@ import com.scaler.capstone.productservice.dtos.CreateProductDto;
 import com.scaler.capstone.productservice.dtos.GetProductDto;
 import com.scaler.capstone.productservice.entities.Category;
 import com.scaler.capstone.productservice.entities.Product;
-import com.scaler.capstone.productservice.repositories.CategoryRepository;
-import com.scaler.capstone.productservice.repositories.ProductRepository;
+import com.scaler.capstone.productservice.repositories.jpa.CategoryRepository;
+import com.scaler.capstone.productservice.repositories.jpa.ProductRepository;
 import com.scaler.capstone.productservice.services.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -16,11 +15,11 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@ConditionalOnProperty(name = "product.service.type", havingValue = "db")
 public class ProductServiceDbImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ProductElasticService productElasticService;
 
 
     @Override
@@ -46,8 +45,9 @@ public class ProductServiceDbImpl implements ProductService {
         }
         Product product = createProductDto.toEntity();
         product.setCategory(category);
-        return GetProductDto.from(productRepository.save(product));
-
+        product = productRepository.save(product);
+        productElasticService.save(product);
+        return GetProductDto.from(product);
     }
 
     @Override

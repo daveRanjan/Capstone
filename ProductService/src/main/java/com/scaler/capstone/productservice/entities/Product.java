@@ -10,7 +10,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Product  extends BaseEntity{
+public class Product extends BaseEntity {
     @Column
     private String title;
     @Column
