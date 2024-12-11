@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface SearchService {
     Page<GetProductDto> simpleSearch(String q, List<FilterDto> filters, SortingCriteria sortCriteria, Integer page, Integer size);
+
+    Page<GetProductDto> elasticSearch(String query, List<FilterDto> filters, SortingCriteria sortCriteria, Integer page, Integer size);
 }

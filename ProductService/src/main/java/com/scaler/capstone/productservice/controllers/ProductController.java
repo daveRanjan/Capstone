@@ -47,6 +47,6 @@ public class ProductController {
                                       @RequestParam(name = "sort", required = false) SortingCriteria sortCriteria,
                                       @RequestParam(name = "page", required = false, defaultValue = "0") Integer page,
                                       @RequestParam(name = "size", required = false, defaultValue = "10") Integer size) {
-        return searchService.simpleSearch(q, filters, sortCriteria, page, size);
+        return searchService.elasticSearch(q, filters, sortCriteria, page, size);
     }
 }

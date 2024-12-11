@@ -1,4 +1,4 @@
-package com.scaler.capstone.productservice.repositories;
+package com.scaler.capstone.productservice.repositories.jpa;
 
 import com.scaler.capstone.productservice.entities.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
