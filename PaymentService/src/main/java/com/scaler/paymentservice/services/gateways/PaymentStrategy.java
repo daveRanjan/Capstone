@@ -7,6 +7,10 @@ public class PaymentStrategy {
 
     StripePaymentGateway stripePaymentGateway;
 
+    public PaymentStrategy(StripePaymentGateway stripePaymentGateway) {
+        this.stripePaymentGateway = stripePaymentGateway;
+    }
+
     public PaymentGateway getBestPaymentGateway() {
         return stripePaymentGateway;
     }
