@@ -1,6 +1,8 @@
 package com.scaler.paymentservice.services.gateways;
 
+import com.scaler.paymentservice.dtos.PaymentLinkLocal;
+
 public interface PaymentGateway {
 
-    String generatePaymentLink(String orderId, String email, String phoneNumber, Long amount);
+    PaymentLinkLocal generatePaymentLink(String orderId, String email, String phoneNumber, Long amount);
 }

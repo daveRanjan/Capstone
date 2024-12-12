@@ -1,5 +1,7 @@
 package com.scaler.paymentservice.services.gateways;
 
+import com.scaler.paymentservice.dtos.PaymentLinkLocal;
+import com.scaler.paymentservice.repositories.PaymentRepository;
 import com.stripe.Stripe;
 import com.stripe.model.PaymentLink;
 import com.stripe.model.Price;
@@ -13,11 +15,12 @@ import java.util.Map;
 
 @Service
 public class StripePaymentGateway implements PaymentGateway {
-    @Value("${stripe.key.secret}")
+    @Value("${stripe.secret.key}")
     private String apiKey;
+    private PaymentRepository paymentRepository;
 
     @Override
-    public String generatePaymentLink(String orderId, String email, String phoneNumber, Long amount) {
+    public PaymentLinkLocal generatePaymentLink(String orderId, String email, String phoneNumber, Long amount) {
         Stripe.apiKey = apiKey;
 
         Map<String, Object> params = new HashMap<>();
@@ -49,7 +52,7 @@ public class StripePaymentGateway implements PaymentGateway {
         afterCompletion.put("type", "redirect");
 
         Map<String, Object> redirect = new HashMap<>();
-        redirect.put("url", "https://scaler.com?payment_id={CHECKOUT_SESSION_ID}");
+        redirect.put("url", "https://eodolnl4c5lrs2.m.pipedream.net?session={CHECKOUT_SESSION_ID}");
         afterCompletion.put("redirect", redirect);
 
         params.put("after_completion", afterCompletion);
@@ -61,6 +64,6 @@ public class StripePaymentGateway implements PaymentGateway {
             System.out.println(e.getMessage());
         }
 
-        return paymentLink.getUrl().toString();
+        return new PaymentLinkLocal(paymentLink.getId(), paymentLink.getUrl());
     }
 }
