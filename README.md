@@ -1,35 +1,74 @@
-### CAPSTONE PROJECT: BACKEND SPECIALIZATION 
+<div align="center">
+  <h1>Capstone Project - E-commerce Backend Architecture</h1>
+  <p>
+    Scalable, efficient, and secure e-commerce platform backend built with modern technologies and best practices.
+  </p>
+  <a href="https://github.com/daveRanjan/Capstone"><strong>Explore the Repository »</strong></a>
+</div>
 
-### Structure of the project:
-```
-├── Capstone (Parent Module)
-├──── Product Service
-├──── Order Service
-├──── User Service
-├──── Catalog Service
-├──── Cart Service
-├──── Payment Service
-```
-### Project Management
-Product Management is done via Backlog tool. It is free for small projects and suitable for the my needs to manage this projects. 
+---
 
-All the commit will have the task-id usually looks like this 
+## 🚀 About the Project
 
-``` **[CAPSTONE-XXX]** | Short Commit Message | Optional Long Commit Details ``` 
+This project demonstrates the implementation of a comprehensive backend architecture for an e-commerce platform. It focuses on scalability, security, and performance, ensuring a seamless user experience.
 
-### Branching and Management
+### Key Features
 
-- ***master*** - This is the main branch where the source code of HEAD always reflects a production-ready state.
-- **develop** - This is the main branch where the source code of HEAD always reflects a state with the latest delivered development changes for the next release. Some would call this the “integration branch”. This is where any automatic nightly builds are built from.
-- **feature/<feature-name>** - This is the branch where the feature is developed. When the feature is complete, it is merged back into develop.
-- **task/CAPSTONE-XXX** - This is the branch where the task is developed. When the task is complete, it is merged back into feature/<feature-name.
-- **bug/CAPSTONE-XXX** - This is the branch where the bug is fixed. When the bug is fixed, it is merged back into develop.
+- **User Management**: User registration, login, profile updates, and secure password reset.
+- **Product Catalog**: Advanced search and filter capabilities powered by Elasticsearch.
+- **Cart & Checkout**: Dynamic cart management and smooth checkout flow.
+- **Order Management**: Order tracking, history, and notifications.
+- **Payment Integration**: Secure transactions with multiple payment gateways.
+- **Microservices Architecture**: Modular and scalable design for independent service deployment.
 
-Restricted Banches:-
-- **master** - No direct commits are allowed to this branch. All the code will be merged only via Pull Requests.
-- **develop** - No direct commits are allowed to this branch.
+---
 
+## 🛠️ Built With
 
+### Backend Technologies
+- **Java 21** with **Spring Boot 3.4.0**
+- **Spring Cloud** for microservice orchestration
+- **MySQL**, **MongoDB (DocumentDB)**, **Redis**, and **Elasticsearch** for data storage and caching
+- **Apache Kafka** for inter-service communication
 
-### Mentor
-@Naman-Bhalla
+### DevOps & Infrastructure
+- **AWS ECS**, **RDS**, **VPC**, **ALB**, **CloudWatch**
+- **Docker** for containerization
+- **GitHub Actions** for CI/CD
+
+---
+
+## 🏗️ Architecture Overview
+
+### Microservices
+- **User Service**: Authentication and profile management
+- **Product Service**: Catalog management and search
+- **Cart Service**: Cart operations
+- **Order Service**: Order processing
+- **Payment Service**: Payment gateway integration
+
+### Communication
+- **REST APIs** for synchronous communication
+- **Kafka** for asynchronous communication and event-driven architecture
+
+### Deployment
+- AWS ECS with Fargate for container orchestration
+- Multi-AZ RDS for database high availability
+- Prometheus and Grafana for monitoring and alerting
+
+---
+
+## 📖 Getting Started
+
+### Prerequisites
+- **Java 21**
+- **Docker**
+- **AWS Account** for cloud deployment
+- **MySQL** and **Elasticsearch** setup
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/daveRanjan/Capstone.git
+   cd Capstone
