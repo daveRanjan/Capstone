@@ -13,6 +13,9 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>UserService</name>
     <description>UserService</description>
+    <build>
+        <finalName>user-service</finalName>
+    </build>
     <url/>
     <licenses>
         <license/>

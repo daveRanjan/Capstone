@@ -13,6 +13,9 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>DiscoveryService</name>
 	<description>DiscoveryService</description>
+	<build>
+		<finalName>discovery-service</finalName>
+	</build>
 	<url/>
 	<licenses>
 		<license/>

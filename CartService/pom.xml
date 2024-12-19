@@ -13,6 +13,9 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>cartservice</name>
     <description>cartservice</description>
+    <build>
+        <finalName>cart-service</finalName>
+    </build>
     <url/>
     <licenses>
         <license/>

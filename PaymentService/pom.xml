@@ -13,6 +13,9 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>PaymentService</name>
     <description>PaymentService</description>
+    <build>
+        <finalName>payment-service</finalName>
+    </build>
     <url/>
     <licenses>
         <license/>

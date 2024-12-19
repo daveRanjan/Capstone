@@ -13,6 +13,9 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>OrderService</name>
 	<description>OrderService</description>
+	<build>
+		<finalName>order-service</finalName>
+	</build>
 	<url/>
 	<licenses>
 		<license/>
