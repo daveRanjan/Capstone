@@ -13,6 +13,9 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>NotificationService</name>
     <description>NotificationService</description>
+    <build>
+        <finalName>notification-service</finalName>
+    </build>
     <url/>
     <licenses>
         <license/>
