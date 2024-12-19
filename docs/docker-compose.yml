@@ -1,0 +1,174 @@
+version: '3.8'
+
+services:
+  discovery-service:
+    build:
+      context: ./discovery-service
+      dockerfile: Dockerfile
+    container_name: discovery-service
+    ports:
+      - "8761:8761"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    networks:
+      - capstone-network
+
+  user-service:
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
+    container_name: user-service
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/userdb
+      - SPRING_DATASOURCE_USERNAME=capstone
+      - SPRING_DATASOURCE_PASSWORD=capstonepassword
+      - SERVER_PORT=8080
+    depends_on:
+      - mysql
+    networks:
+      - capstone-network
+
+  product-service:
+    build:
+      context: ./product-service
+      dockerfile: Dockerfile
+    container_name: product-service
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/productdb
+      - SPRING_DATASOURCE_USERNAME=capstone
+      - SPRING_DATASOURCE_PASSWORD=capstonepassword
+      - SERVER_PORT=8081
+    depends_on:
+      - mysql
+    networks:
+      - capstone-network
+
+  cart-service:
+    build:
+      context: ./cart-service
+      dockerfile: Dockerfile
+    container_name: cart-service
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATA_MONGO_URI=mongodb://mongo:27017/cartdb
+      - SERVER_PORT=8082
+
+    depends_on:
+      - mongo
+    networks:
+      - capstone-network
+
+  order-service:
+    build:
+      context: ./order-service
+      dockerfile: Dockerfile
+    container_name: order-service
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/orderdb
+      - SPRING_DATASOURCE_USERNAME=capstone
+      - SPRING_DATASOURCE_PASSWORD=capstonepassword
+      - SERVER_PORT=8083
+    depends_on:
+      - mysql
+    networks:
+      - capstone-network
+
+  payment-service:
+    build:
+      context: ./payment-service
+      dockerfile: Dockerfile
+    container_name: payment-service
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/paymentdb
+      - SPRING_DATASOURCE_USERNAME=capstone
+      - SPRING_DATASOURCE_PASSWORD=capstonepassword
+      - SERVER_PORT=8084
+    depends_on:
+      - mysql
+    networks:
+      - capstone-network
+
+  notification-service:
+    build:
+      context: ./notification-service
+      dockerfile: Dockerfile
+    container_name: notification-service
+    ports:
+      - "8085:8085"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/notificationdb
+      - SPRING_DATASOURCE_USERNAME=capstone
+      - SPRING_DATASOURCE_PASSWORD=capstonepassword
+      - SERVER_PORT=8085
+    depends_on:
+      - mysql
+    networks:
+      - capstone-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=userdb
+      - MYSQL_USER=capstone
+      - MYSQL_PASSWORD=capstonepassword
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - capstone-network
+
+  mongo:
+    image: mongo:6.0
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - capstone-network
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.2
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - capstone-network
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+
+  redis:
+    image: redis:7.2
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - capstone-network
+
+networks:
+  capstone-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+  elasticsearch_data:
